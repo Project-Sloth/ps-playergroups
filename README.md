@@ -45,4 +45,7 @@ exports["devyn-groups"]:CreateBlipForGroup(groupID, name, label, coords, sprite,
 
 -- Remove a blip for everyone in a group with the matching blip name.
 exports["devyn-groups"]:RemoveBlipForGroup(groupID, name)
+
+-- Finds the groupID the player is currently in. If they are not in any then it returns 0.
+exports["devyn-groups"]:FindGroupByMember(playerID)
 ```
