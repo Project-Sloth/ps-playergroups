@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta id="viewport" name="viewport" content ="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.1.0/dist/quasar.prod.css" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.1.0/dist/quasar.umd.prod.js" defer></script>
+    <script src="app.js" defer></script>
+
+  </head>
+
+  <body style="background:rgb(0,0,0,0.0)">
+    <div class="groups-container">
+        <div class="groups-main" v-show="mainMenuShow">
+          <div class="groups-header">Group Options</div>
+
+          <q-item class="groups-icon">
+            <i class="fas fa-users fa-4x"></i>
+          </q-item>
+
+          <q-item>
+            <q-item-section>
+              <q-btn color="white" size="12px" text-color="black" label="Create Group" v-on:click="CreateGroup($event)"/>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-btn color="white" size="12px" text-color="black" label="Available Groups" v-on:click="AvailableGroups($event)"/>
+            </q-item-section>
+          </q-item>
+        </div>
+
+        <div class="group-list" v-show="listShow">
+          <div class="groups-header">Available Groups</div>
+          <q-item class="groups-icon">
+            <i class="fas fa-users fa-4x"></i>
+          </q-item>
+          <div class="groups-available">
+            <q-list>
+              <q-item v-for="(i,v) in GroupList">
+                  <q-item-section><q-btn color="teal" size="12px" text-color="white" :label="i.name" v-on:click="RequestJoin(i.id)"/></q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </div>
+
+        <div class="groups-group" v-show="groupShow">
+          <div class="groups-header">Current Task: {{CurrentTask}} </div>
+          <q-item class="groups-icon">
+            <i class="fas fa-users fa-4x"></i>
+          </q-item>
+          <q-list id="members">
+            <q-item v-for="(i,v) in GroupMembers">
+                <q-item-section text-color="white" color="white"><div class="member-name"> {{i.name}} </div></q-item-section>
+                <q-item-section v-show="isGroupLeader"><q-btn color="red" size="12px" text-color="white" label="Kick" style="max-width: 80px;" v-on:click="MemberKick(v, i.id)" /></q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+
+        <div class="groups-requests" v-show="requestShow">
+          <div class="groups-header">Group Requests</div>
+          <q-item class="groups-icon">
+            <i class="fas fa-user-clock fa-4x"></i>
+          </q-item>
+          <q-list>
+            <q-item v-for="(i,v) in GroupRequests">
+              <q-item-section><q-btn color="teal" size="12px" text-color="white" :label="i.name" style="min-width: 100px;" /></q-item-section>
+              <q-item-section><q-btn color="red" size="12px" text-color="white" label="Deny" v-on:click="RequestDeny(v, i.id)"/></q-item-section>
+              <q-item-section><q-btn color="green" size="12px" text-color="white" label="Accept" v-on:click="RequestAccept(v, i.id)"/></q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+
+        <div class="groups-footer fixed-bottom">
+          <q-item>
+            <q-item-section v-show="isInGroup && !requestShow"><q-btn color="white" size="12px" text-color="black" label="Leave" v-on:click="LeaveGroup($event)"/></q-item-section>
+            <q-item-section v-show="!isInGroup && !mainMenuShow"><q-btn color="white" size="12px" text-color="black" label="Menu" v-on:click="MainMenu($event)"/></q-item-section>
+            <q-item-section v-show="requestShow"><q-btn color="white" size="12px" text-color="black" label="Back" v-on:click="ViewGroup($event)"/></q-item-section>
+            <q-item-section v-show="isGroupLeader && !requestShow"><q-btn color="white" size="12px" text-color="black" label="Requests" v-on:click="ViewRequests($event)"/></q-item-section>
+          </q-item>
+        </div>
+    </div>
+  </body>
+</html>

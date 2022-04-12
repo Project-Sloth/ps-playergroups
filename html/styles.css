@@ -1,0 +1,60 @@
+div#q-loading-bar { display: none!important; } /* makes sure there's no ajax load from quasar */
+::-webkit-scrollbar { display: none!important; } /* makes sure there's no ugly scrollbar on menu*/
+
+.groups-container {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60vh;
+    width: 40vh;
+    background-color: #212428;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.groups-header {
+    text-align: center;
+    color: white;
+}
+
+.groups-icon {
+    left: 37%;
+    color: white !important;
+}
+
+.groups-main {
+    padding-top: 25px;
+}
+
+.groups-list {
+    padding-top: 25px;
+}
+
+.groups-requests {
+    padding-top: 25px;
+}
+
+.groups-group {
+    padding-top: 25px;
+}
+
+.groups-members {
+    padding-top: 50px;
+    text-align: center;
+}
+
+.member {
+    padding-top: 25px;
+    padding-left: 170px;;
+    font-size: 25px;
+    color: white;
+}
+
+.member-name {
+    padding-left: 60px;
+    font-size: 20px;
+    color: white;
+}
