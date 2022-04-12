@@ -252,6 +252,7 @@ function FindGroupByMember(src)
         return 0
     end
 end
+exports("FindGroupByMember", FindGroupByMember)
 
 function ChangeGroupLeader(groupID)
     local m = getGroupMembers(groupID)
