@@ -23,7 +23,7 @@ const groups = {
     },
     methods: {
         CreateGroup: async function(event) {
-            let result = await $.post('https://devyn-groups/group-create');
+            let result = await $.post(`https://${GetParentResourceName()}/group-create`);
             if (result != false) {
                 this.HideMenus()
                 this.isInGroup = true
@@ -33,7 +33,7 @@ const groups = {
                 this.groupShow = true
                 this.CurrentStage = "WAITING"
                 
-                $.post('https://devyn-groups/group-created', JSON.stringify({
+                $.post(`https://${GetParentResourceName()}/group-created`, JSON.stringify({
                     GroupID : this.GroupID,
                     status : this.CurrentStage,
                     leader: this.isGroupLeader,
@@ -45,7 +45,7 @@ const groups = {
         AvailableGroups: async function(event) {
             this.HideMenus()
             let temp = []
-            let result = await $.post('https://devyn-groups/getActiveGroups');
+            let result = await $.post(`https://${GetParentResourceName()}/getActiveGroups`);
             $.each(result, function(index, value) {
                 temp.push(value)
             });
@@ -53,7 +53,7 @@ const groups = {
             this.listShow = true
         },
         RequestJoin: function(id) {
-            $.post('https://devyn-groups/request-join', JSON.stringify({groupID : id }));
+            $.post(`https://${GetParentResourceName()}/request-join`, JSON.stringify({groupID : id }));
         },
         LeaveGroup: function(event) {
             if (this.isInGroup) {
@@ -62,11 +62,10 @@ const groups = {
                 this.isInGroup = false
                 if (this.isGroupLeader) {
                     this.isGroupLeader = false
-                    $.post('https://devyn-groups/group-destroy');
+                    $.post(`https://${GetParentResourceName()}/group-destroy`);
                     
                 } else {
-                    console.log(this.GroupID)
-                    $.post('https://devyn-groups/group-leave', JSON.stringify({groupID : this.GroupID }));
+                    $.post(`https://${GetParentResourceName()}/group-leave`, JSON.stringify({groupID : this.GroupID }));
                 }
                 this.GroupCleanup()
             }
@@ -83,7 +82,7 @@ const groups = {
             
             this.HideMenus()
             let temp = []
-            let result = await $.post('https://devyn-groups/view-requests', JSON.stringify({groupID : this.GroupID }));
+            let result = await $.post(`https://${GetParentResourceName()}/view-requests`, JSON.stringify({groupID : this.GroupID }));
             $.each(result, function(index, value) {
                 temp.push(value)
             });
@@ -92,15 +91,15 @@ const groups = {
         },
         RequestAccept: function(v, id) {
             this.GroupRequests.splice(v, 1);
-            $.post('https://devyn-groups/request-accept', JSON.stringify({player : id, groupID : this.GroupID}));
+            $.post(`https://${GetParentResourceName()}/request-accept`, JSON.stringify({player : id, groupID : this.GroupID}));
         },
         RequestDeny: function(v, id) {
             this.GroupRequests.splice(v, 1);
-            $.post('https://devyn-groups/request-deny', JSON.stringify({player : id, groupID : this.GroupID}));
+            $.post(`https://${GetParentResourceName()}/request-deny`, JSON.stringify({player : id, groupID : this.GroupID}));
         },
         MemberKick: function(v, id) {
             this.GroupMembers.splice(v, 1);
-            $.post('https://devyn-groups/member-kick', JSON.stringify({player : id, groupID : this.GroupID}));
+            $.post(`https://${GetParentResourceName()}/member-kick`, JSON.stringify({player : id, groupID : this.GroupID}));
         },
         HideMenus: function() {
             this.mainMenuShow = false
@@ -114,7 +113,6 @@ const groups = {
                 this.mainMenuShow = true
             } else {
                 this.HideMenus()
-
                 this.groupShow = true
             }
             $(".groups-container").fadeIn(150);
@@ -130,7 +128,7 @@ const groups = {
 
             } else if (type === "setStage") {
                 this.CurrentStage = data.stage
-                $.post('https://devyn-groups/update-status', JSON.stringify({status : this.CurrentStage }));
+                $.post(`https://${GetParentResourceName()}/update-status`, JSON.stringify({status : this.CurrentStage }));
             } else if (type === "groupDestroy") {
                 this.HideMenus()
                 this.isInGroup = false
@@ -153,7 +151,7 @@ const groups = {
             this.GroupTasks = []
             this.CurrentStage = "None"
             this.GroupID = 0
-            $.post('https://devyn-groups/group-cleanup');
+            $.post(`https://${GetParentResourceName()}/group-cleanup`);
         },
     },
     destroyed() {
@@ -186,5 +184,5 @@ document.onkeyup = function (data) {
   
 function closeMenu() {
     $(".groups-container").fadeOut(150);
-    $.post('https://devyn-groups/close');
+    $.post(`https://${GetParentResourceName()}/close`);
 }

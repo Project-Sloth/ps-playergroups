@@ -76,7 +76,6 @@ function openGroupMenu()
     SetNuiFocus(true, true)
 end
 
-
 RegisterNetEvent("groups:updateJobStage", function(stage)
     currentJobStage = stage
     SendNUIMessage({ 
@@ -189,7 +188,7 @@ end)
 
 RegisterNUICallback('group-leave', function(data)
     TriggerServerEvent("groups:leaveGroup", data.groupID)
-    currentJobStage = "NONE"
+    currentJobStage = "WAITING"
     GroupID = 0
     isGroupLeader = false
     for i=1,#GroupBlips do 

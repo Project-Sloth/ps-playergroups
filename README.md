@@ -14,38 +14,38 @@ There are no jobs or anything included with these files.
 ### Client Side
 ```
 -- Returns Client side job stage
-exports["devyn-groups"]:GetJobStage()
+exports["ps-playergroups"]:GetJobStage()
 
 -- Returns Clients current groupID
-exports["devyn-groups"]:GetGroupID()
+exports["ps-playergroups"]:GetGroupID()
 
 -- Returns if the Client is the group leader.
-exports["devyn-groups"]:IsGroupLeader()
+exports["ps-playergroups"]:IsGroupLeader()
 ```
 
 ### Server Side
 ```
 -- Returns group's leader src
-exports["devyn-groups"]:GetGroupLeader(groupID)
+exports["ps-playergroups"]:GetGroupLeader(groupID)
 
 -- Returns group's job status.
-exports["devyn-groups"]:getJobStatus(groupID)
+exports["ps-playergroups"]:getJobStatus(groupID)
 
 -- Sets a group job status.
-exports["devyn-groups"]:setJobStatus(groupID, status)
+exports["ps-playergroups"]:setJobStatus(groupID, status)
 
 -- Gets number of players in a group.
-exports["devyn-groups"]:getGroupSize(groupID)
+exports["ps-playergroups"]:getGroupSize(groupID)
 
 -- Returns player IDs inside a table.
-exports["devyn-groups"]:getGroupMembers(groupID)
+exports["ps-playergroups"]:getGroupMembers(groupID)
 
 -- Creates a blip for everyone in a group.
-exports["devyn-groups"]:CreateBlipForGroup(groupID, name, label, coords, sprite, color, scale, route)
+exports["ps-playergroups"]:CreateBlipForGroup(groupID, name, label, coords, sprite, color, scale, route)
 
 -- Remove a blip for everyone in a group with the matching blip name.
-exports["devyn-groups"]:RemoveBlipForGroup(groupID, name)
+exports["ps-playergroups"]:RemoveBlipForGroup(groupID, name)
 
 -- Finds the groupID the player is currently in. If they are not in any then it returns 0.
-exports["devyn-groups"]:FindGroupByMember(playerID)
+exports["ps-playergroups"]:FindGroupByMember(playerID)
 ```

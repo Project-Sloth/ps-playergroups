@@ -254,6 +254,7 @@ function FindGroupByMember(src)
 end
 exports("FindGroupByMember", FindGroupByMember)
 
+-- Experimental
 function ChangeGroupLeader(groupID)
     local m = getGroupMembers(groupID)
     local l = GetGroupLeader(groupID)
@@ -270,6 +271,7 @@ function ChangeGroupLeader(groupID)
     return false
 end
 
+-- Destroy a group object.
 function DestroyGroup(groupID)
     local m = getGroupMembers(groupID)
     removeGroupMembers(groupID)

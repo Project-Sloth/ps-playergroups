@@ -4,9 +4,7 @@ games { 'gta5' }
 author 'devyn'
 
 client_script "client.lua"
-server_scripts {
-    "server.lua",
-}
+server_script "server.lua",
 
 ui_page "html/index.html"
 
