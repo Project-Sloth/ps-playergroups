@@ -108,6 +108,16 @@ RegisterNetEvent("groups:UpdateLeader", function()
     })
 end)
 
+RegisterNetEvent("groups:GroupDestroy", function()
+    currentJobStage = "NONE"
+    GroupID = 0
+    isGroupLeader = false
+    SendNUIMessage({ 
+        action = "UpdateGroups",
+        type = "groupDestroy",
+    })
+end)
+
 -- NUI Callbacks
 
 RegisterNUICallback('close', function()

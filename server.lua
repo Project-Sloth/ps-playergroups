@@ -276,7 +276,7 @@ function DestroyGroup(groupID)
     local m = getGroupMembers(groupID)
     removeGroupMembers(groupID)
     for i=1, #m do 
-         TriggerClientEvent("groups:groupUpdate", m[i])
+         TriggerClientEvent("groups:GroupDestroy", m[i])
     end
     Groups[groupID] = nil
 end
