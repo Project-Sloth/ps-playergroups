@@ -1,5 +1,5 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local currentJobStage = "NONE"
+local currentJobStage = "WAITING"
 local GroupID = 0
 local isGroupLeader = false
 local GroupBlips = {}
@@ -126,7 +126,7 @@ RegisterNetEvent("groups:UpdateLeader", function()
 end)
 
 RegisterNetEvent("groups:GroupDestroy", function()
-    currentJobStage = "NONE"
+    currentJobStage = "WAITING"
     GroupID = 0
     isGroupLeader = false
     SendNUIMessage({ 
