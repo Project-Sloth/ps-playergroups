@@ -1,8 +1,25 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local currentJobStage = "NONE"
+local currentJobStage = "WAITING"
 local GroupID = 0
 local isGroupLeader = false
 local GroupBlips = {}
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+    if GroupID ~= nil then
+        if isGroupLeader then
+            TriggerServerEvent("groups:destroyGroup")
+        else
+            TriggerServerEvent("groups:leaveGroup", GroupID)
+            currentJobStage = "WAITING"
+            GroupID = 0
+            isGroupLeader = false
+            for i=1,#GroupBlips do 
+                RemoveBlip(GroupBlips[i]["blip"])
+                GroupBlips[i] = nil
+            end
+        end
+    end
+end)
 
 
 RegisterNetEvent("groups:createBlip", function(name, data)
@@ -105,6 +122,16 @@ RegisterNetEvent("groups:UpdateLeader", function()
     isGroupLeader = true
     SendNUIMessage({ 
         action = "makeLeader",  
+    })
+end)
+
+RegisterNetEvent("groups:GroupDestroy", function()
+    currentJobStage = "WAITING"
+    GroupID = 0
+    isGroupLeader = false
+    SendNUIMessage({ 
+        action = "UpdateGroups",
+        type = "groupDestroy",
     })
 end)
 
