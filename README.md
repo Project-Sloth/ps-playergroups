@@ -48,4 +48,10 @@ exports["ps-playergroups"]:RemoveBlipForGroup(groupID, name)
 
 -- Finds the groupID the player is currently in. If they are not in any then it returns 0.
 exports["ps-playergroups"]:FindGroupByMember(playerID)
+
+-- Triggers event for each member of a group. Args are optional.
+exports["ps-playergroups"]:GroupEvent(groupID, eventname, args) 
+
+Example: exports["ps-playergroups"]:GroupEvent(groupID, "my:event", {"one", 2, false}) 
+
 ```

@@ -348,3 +348,18 @@ function RemoveBlipForGroup(groupID, name)
     end
 end
 exports('RemoveBlipForGroup', RemoveBlipForGroup)
+
+-- Triggers event for each member of a group. Args are optional.
+function GroupEvent(groupID, event, args)
+    if groupID == nil then return print("GroupEvent was sent an invalid groupID :"..groupID) end
+    if event == nil then return print("no valid event was passed to GroupEvent") end
+    local members = getGroupMembers(groupID)
+    for i=1,#members do
+        if args ~= nil then
+            TriggerClientEvent(event, members[i], table.unpack(args))
+        else 
+            TriggerClientEvent(event, members[i])
+        end
+    end
+end
+export("GroupEvent", GroupEvent)
