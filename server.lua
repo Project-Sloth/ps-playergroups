@@ -362,4 +362,4 @@ function GroupEvent(groupID, event, args)
         end
     end
 end
-export("GroupEvent", GroupEvent)
+exports("GroupEvent", GroupEvent)
