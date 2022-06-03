@@ -54,4 +54,7 @@ exports["ps-playergroups"]:GroupEvent(groupID, eventname, args)
 
 Example: exports["ps-playergroups"]:GroupEvent(groupID, "my:event", {"one", 2, false}) 
 
+
 ```
+# DMCA Protection Certificate
+![image](https://user-images.githubusercontent.com/82112471/171923247-0d3cd950-6278-4846-9a18-a7266ce7080d.png)
