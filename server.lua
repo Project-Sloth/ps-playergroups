@@ -284,16 +284,6 @@ function ChangeGroupLeader(groupID)
     if leader ~= 0 then
         TriggerClientEvent("groups:UpdateLeader", leader)
     end
-    -- if #m >= 1 then Note from Jaycc: I'm sure this was a better way to do it, but I got it working with the above methods
-    --     for i=1, #m do 
-    --         if m[i] ~= l then 
-    --             Groups[groupID]["members"]["leader"] = m[i]
-    --             Groups[groupID]["members"]["helpers"][i] = nil
-    --             return true
-    --         end
-    --     end
-    --     return false
-    -- end
     return leaderFound
 end
 
