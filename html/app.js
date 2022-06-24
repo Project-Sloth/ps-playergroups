@@ -60,13 +60,8 @@ const groups = {
                 this.HideMenus()
                 this.mainMenuShow = true
                 this.isInGroup = false
-                if (this.isGroupLeader) {
-                    this.isGroupLeader = false
-                    $.post(`https://${GetParentResourceName()}/group-destroy`);
-                    
-                } else {
-                    $.post(`https://${GetParentResourceName()}/group-leave`, JSON.stringify({groupID : this.GroupID }));
-                }
+                this.isGroupLeader = false
+                $.post(`https://${GetParentResourceName()}/group-leave`, JSON.stringify({groupID : this.GroupID }));
                 this.GroupCleanup()
             }
         },
