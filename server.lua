@@ -11,16 +11,8 @@ AddEventHandler('playerDropped', function(reason)
 	local src = source
 	
     local groupID = FindGroupByMember(src)
-    if groupID > 0 then
-        -- if isGroupLeader(src) then 
-        --     if ChangeGroupLeader(src) then
-        --         TriggerClientEvent("groups:UpdateLeader", Groups[groupID]["members"]["leader"])
-        --     else 
-        --         DestroyGroup(groupID)
-        --     end 
-        -- else 
-            RemovePlayerFromGroup(src, groupID)
-        -- end 
+    if groupID > 0 then 
+        RemovePlayerFromGroup(src, groupID) -- This function now handles changing leader as well.
     end	
 end)
 
@@ -181,24 +173,19 @@ function AddPlayerToGroup(player, groupID)
     return false
 end
 
--- Removes player from the specified group.
+-- Removes player from the specified group and will change leader if player leaving is leader
 function RemovePlayerFromGroup(player, groupID)
     if Players[player] then 
         if Groups[groupID] then
             local g = Groups[groupID]["members"]["helpers"]
-            print(player..' player')
-            print(Groups[groupID]["members"]["leader"]..' leader')
             if Groups[groupID]["members"]["leader"] == player then
-                print('Player is Leader')
                 if ChangeGroupLeader(groupID) then
                     Players[player] = nil
-                    print('Leader Changed')
                     TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
                     Wait(10)
                     UpdateGroupData(groupID)
                 else
                     TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
-                    print('Group Destroyed')
                     DestroyGroup(groupID)
                 end
             else
@@ -207,7 +194,6 @@ function RemovePlayerFromGroup(player, groupID)
                         Groups[groupID]["members"]["helpers"][k] = nil
                         TriggerClientEvent('groups:GroupDestroy', v)
                         Players[player] = nil
-                        print('Player Kicked')
                     end
                 end
                 TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
