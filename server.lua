@@ -11,16 +11,8 @@ AddEventHandler('playerDropped', function(reason)
 	local src = source
 	
     local groupID = FindGroupByMember(src)
-    if groupID > 0 then
-        if isGroupLeader(src) then 
-            if ChangeGroupLeader(src) then
-                TriggerClientEvent("groups:UpdateLeader", Groups[groupID]["members"]["leader"])
-            else 
-                DestroyGroup(groupID)
-            end 
-        else 
-            RemovePlayerFromGroup(groupID, src)
-        end 
+    if groupID > 0 then 
+        RemovePlayerFromGroup(src, groupID) -- This function now handles changing leader as well.
     end	
 end)
 
@@ -52,7 +44,9 @@ QBCore.Functions.CreateCallback("groups:getActiveGroups", function(source, cb)
     local temp = {}
     for k,v in pairs(Groups) do
         if Groups[k] ~= nil then 
-            table.insert(temp, {name = GetPlayerCharName(v["members"]["leader"]), id = k})
+            if v.status == "WAITING" then
+                table.insert(temp, {name = GetPlayerCharName(v["members"]["leader"]), id = k})
+            end
         end
     end
     cb(temp)
@@ -77,6 +71,7 @@ end)
 -- Sends a request to join the specified groupID
 QBCore.Functions.CreateCallback("groups:requestJoinGroup", function(source, cb, groupID)
     local src = source
+    local lead = Groups[groupID]["members"]["leader"]
     if not Players[src] then
         if Groups[groupID] then 
             if #Groups[groupID]["members"] < GroupLimit then
@@ -85,6 +80,7 @@ QBCore.Functions.CreateCallback("groups:requestJoinGroup", function(source, cb, 
                 end
                 table.insert(Requests[groupID], src)
                 cb(true)
+                TriggerClientEvent("QBCore:Notify", lead, "Someone has requested to join the group", "success")
             else
                 TriggerClientEvent("QBCore:Notify", src, "The group is full", "error")
             end
@@ -177,19 +173,33 @@ function AddPlayerToGroup(player, groupID)
     return false
 end
 
--- Removes player from the specified group.
+-- Removes player from the specified group and will change leader if player leaving is leader
 function RemovePlayerFromGroup(player, groupID)
     if Players[player] then 
         if Groups[groupID] then
             local g = Groups[groupID]["members"]["helpers"]
-            for k,v in pairs(g) do 
-                if v == player then
-                    Groups[groupID]["members"]["helpers"][k] = nil
+            if Groups[groupID]["members"]["leader"] == player then
+                if ChangeGroupLeader(groupID) then
                     Players[player] = nil
+                    TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
+                    Wait(10)
+                    UpdateGroupData(groupID)
+                else
+                    TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
+                    DestroyGroup(groupID)
                 end
+            else
+                for k,v in pairs(g) do
+                    if player == v then
+                        Groups[groupID]["members"]["helpers"][k] = nil
+                        TriggerClientEvent('groups:GroupDestroy', v)
+                        Players[player] = nil
+                    end
+                end
+                TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
+                Wait(10)
+                UpdateGroupData(groupID)
             end
-            TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
-            UpdateGroupData(groupID)
         end 
     end
 end
@@ -256,19 +266,25 @@ exports("FindGroupByMember", FindGroupByMember)
 
 -- Experimental
 function ChangeGroupLeader(groupID)
-    local m = getGroupMembers(groupID)
+    -- local m = getGroupMembers(groupID)
+    local m = Groups[groupID]['members']['helpers'] or {}
     local l = GetGroupLeader(groupID)
-    if #m > 1 then 
-        for i=1, #m do 
-            if m[i] ~= l then 
-                Groups[groupID]["members"]["leader"] = m[i]
-                Groups[groupID]["members"]["helpers"][i] = nil
-                return true
+    local leaderFound = false
+    local leader = 0
+    for k,v in pairs(m) do
+        if not leaderFound then
+            if Groups[groupID]["members"]["helpers"][k] ~= l then
+                Groups[groupID]["members"]["leader"] = v
+                Groups[groupID]["members"]["helpers"][k] = nil
+                leaderFound = true
+                leader = v
             end
         end
-        return false
     end
-    return false
+    if leader ~= 0 then
+        TriggerClientEvent("groups:UpdateLeader", leader)
+    end
+    return leaderFound
 end
 
 -- Destroy a group object.
@@ -348,7 +364,6 @@ function RemoveBlipForGroup(groupID, name)
     end
 end
 exports('RemoveBlipForGroup', RemoveBlipForGroup)
-
 -- Triggers event for each member of a group. Args are optional.
 function GroupEvent(groupID, event, args)
     if groupID == nil then return print("GroupEvent was sent an invalid groupID :"..groupID) end
