@@ -2,6 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local Groups = {} -- Don't Touch
 local Players = {} -- Don't Touch
 local Requests = {} -- Don't Touch
+local GroupStates = {} -- Don't Touch
 
 local GroupLimit = 4 -- Maximum Number of players allowed per group
 
@@ -20,11 +21,11 @@ end)
 QBCore.Functions.CreateCallback("groups:requestCreateGroup", function(source, cb)
     local src = source
     local player = QBCore.Functions.GetPlayer(src)
-    if not Players[src] then 
+    if not Players[src] then
         Players[src] = true
         Groups[#Groups+1] = {
             status="WAITING", 
-            members={
+            members = {
                 leader = src,
                 helpers= {},
             }
@@ -378,3 +379,29 @@ function GroupEvent(groupID, event, args)
     end
 end
 exports("GroupEvent", GroupEvent)
+
+function SetGroupState(groupID, state)
+    if groupID == nil then return print("SetGroupState was sent an invalid groupID :"..groupID) end
+    if state == nil then return print("SetGroupState was sent an invalid state :"..state) end
+    GroupStates[groupID]["state"] = state
+end
+exports("SetGroupState", SetGroupState)
+
+function GetGroupState(groupID, state)
+    if groupID == nil then return print("GetGroupState was sent an invalid groupID :"..groupID) end
+    if state == nil then return print("GetGroupState was sent an invalid state :"..state) end
+    if GroupStates[groupID]["state"] ~= nil then
+        return GroupStates[groupID]["state"]
+    else
+        return false
+    end
+    
+end
+exports("GetGroupState", GetGroupState)
+
+function DestroyGroupState(groupID, state)
+    if groupID == nil then return print("DestroyGroupState was sent an invalid groupID :"..groupID) end
+    if state == nil then return print("DestroyGroupState was sent an invalid state :"..state) end
+    GroupStates[groupID]["state"] = nil
+end
+exports("DestroyGroupState", DestroyGroupState)
