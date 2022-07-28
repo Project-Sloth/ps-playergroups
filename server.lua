@@ -10,7 +10,6 @@ local GroupLimit = 4 -- Maximum Number of players allowed per group
 -- Removes player from group when they leave the server.
 AddEventHandler('playerDropped', function(reason)
 	local src = source
-	
     local groupID = FindGroupByMember(src)
     if groupID > 0 then 
         RemovePlayerFromGroup(src, groupID) -- This function now handles changing leader as well.
@@ -21,16 +20,18 @@ end)
 QBCore.Functions.CreateCallback("groups:requestCreateGroup", function(source, cb)
     local src = source
     local player = QBCore.Functions.GetPlayer(src)
+    print(Players[src])
     if not Players[src] then
         Players[src] = true
-        Groups[#Groups+1] = {
+        local groupID = #Groups+1
+        Groups[groupID] = {
             status="WAITING", 
             members = {
                 leader = src,
                 helpers= {},
             }
         }
-        cb({ groupID = #Groups, name = GetPlayerCharName(src), id = src })
+        cb({ groupID = groupID, name = GetPlayerCharName(src), id = src })
     else
         TriggerClientEvent("QBCore:Notify", src, "You are already in a group", "error")
         cb(false)
@@ -176,7 +177,7 @@ end
 
 -- Removes player from the specified group and will change leader if player leaving is leader
 function RemovePlayerFromGroup(player, groupID)
-    if Players[player] then 
+    if Players[player] then
         if Groups[groupID] then
             local g = Groups[groupID]["members"]["helpers"]
             if Groups[groupID]["members"]["leader"] == player then
@@ -186,6 +187,7 @@ function RemovePlayerFromGroup(player, groupID)
                     Wait(10)
                     UpdateGroupData(groupID)
                 else
+                    Players[player] = nil
                     TriggerClientEvent("QBCore:Notify", player, "You have left the group", "primary")
                     DestroyGroup(groupID)
                 end
@@ -372,6 +374,7 @@ function GroupEvent(groupID, event, args)
     local members = getGroupMembers(groupID)
     for i=1,#members do
         if args ~= nil then
+            --print(table.unpack(args))
             TriggerClientEvent(event, members[i], table.unpack(args))
         else 
             TriggerClientEvent(event, members[i])
