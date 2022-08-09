@@ -20,7 +20,6 @@ end)
 QBCore.Functions.CreateCallback("groups:requestCreateGroup", function(source, cb)
     local src = source
     local player = QBCore.Functions.GetPlayer(src)
-    print(Players[src])
     if not Players[src] then
         Players[src] = true
         local groupID = #Groups+1
@@ -374,7 +373,6 @@ function GroupEvent(groupID, event, args)
     local members = getGroupMembers(groupID)
     for i=1,#members do
         if args ~= nil then
-            --print(table.unpack(args))
             TriggerClientEvent(event, members[i], table.unpack(args))
         else 
             TriggerClientEvent(event, members[i])

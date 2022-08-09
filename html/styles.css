@@ -13,6 +13,7 @@ div#q-loading-bar { display: none!important; } /* makes sure there's no ajax loa
 
     overflow-x: hidden;
     overflow-y: auto;
+    border-radius: 5px;
 }
 
 .groups-header {
@@ -31,6 +32,11 @@ div#q-loading-bar { display: none!important; } /* makes sure there's no ajax loa
 
 .groups-list {
     padding-top: 25px;
+}
+
+.groups-no-groups {
+    text-align: center;
+    color: white;
 }
 
 .groups-requests {
