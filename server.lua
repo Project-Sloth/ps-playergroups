@@ -2,7 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local Groups = {} -- Don't Touch
 local Players = {} -- Don't Touch
 local Requests = {} -- Don't Touch
-local GroupStates = {} -- Don't Touch
+local GroupData = {} -- Don't Touch
 
 local GroupLimit = 4 -- Maximum Number of players allowed per group
 
@@ -30,6 +30,7 @@ QBCore.Functions.CreateCallback("groups:requestCreateGroup", function(source, cb
                 helpers= {},
             }
         }
+        GroupData[groupID] = {}
         cb({ groupID = groupID, name = GetPlayerCharName(src), id = src })
     else
         TriggerClientEvent("QBCore:Notify", src, "You are already in a group", "error")
@@ -384,17 +385,17 @@ exports("GroupEvent", GroupEvent)
 function SetGroupData(groupID, key, data)
     if groupID == nil then return print("SetGroupData was sent an invalid groupID") end
     if key == nil then return print("SetGroupData was sent an invalid key") end
-    GroupStates[groupID][key] = data
+    GroupData[groupID][key] = data
 end
 exports("SetGroupData", SetGroupData)
 
 function GetGroupData(groupID, key)
     if groupID == nil then return print("GetGroupData was sent an invalid groupID") end
     if key == nil then return print("GetGroupData was sent an invalid key") end
-    if GroupStates[groupID][key] ~= nil then
-        return GroupStates[groupID][key]
-    else
+    if GroupData[groupID][key] == nil then
         return false
+    else
+        return GroupData[groupID][key]
     end
     
 end
@@ -403,6 +404,6 @@ exports("GetGroupData", GetGroupData)
 function DestroyGroupData(groupID, key)
     if groupID == nil then return print("DestroyGroupData was sent an invalid groupID") end
     if key == nil then return print("DestroyGroupData was sent an invalid key") end
-    GroupStates[groupID][key] = nil
+    GroupData[groupID][key] = nil
 end
 exports("DestroyGroupData", DestroyGroupData)
