@@ -382,15 +382,15 @@ end
 exports("GroupEvent", GroupEvent)
 
 function SetGroupData(groupID, key, data)
-    if groupID == nil then return print("SetGroupData was sent an invalid groupID :"..groupID) end
-    if key == nil then return print("SetGroupData was sent an invalid state :"..state) end
+    if groupID == nil then return print("SetGroupData was sent an invalid groupID") end
+    if key == nil then return print("SetGroupData was sent an invalid key") end
     GroupStates[groupID][key] = data
 end
 exports("SetGroupData", SetGroupData)
 
 function GetGroupData(groupID, key)
-    if groupID == nil then return print("GetGroupData was sent an invalid groupID :"..groupID) end
-    if key == nil then return print("GetGroupData was sent an invalid key :"..state) end
+    if groupID == nil then return print("GetGroupData was sent an invalid groupID") end
+    if key == nil then return print("GetGroupData was sent an invalid key") end
     if GroupStates[groupID][key] ~= nil then
         return GroupStates[groupID][key]
     else
@@ -401,8 +401,8 @@ end
 exports("GetGroupData", GetGroupData)
 
 function DestroyGroupData(groupID, key)
-    if groupID == nil then return print("DestroyGroupData was sent an invalid groupID :"..groupID) end
-    if state == nil then return print("DestroyGroupData was sent an invalid key :"..state) end
+    if groupID == nil then return print("DestroyGroupData was sent an invalid groupID") end
+    if key == nil then return print("DestroyGroupData was sent an invalid key") end
     GroupStates[groupID][key] = nil
 end
 exports("DestroyGroupData", DestroyGroupData)
