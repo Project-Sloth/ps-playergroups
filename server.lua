@@ -381,28 +381,28 @@ function GroupEvent(groupID, event, args)
 end
 exports("GroupEvent", GroupEvent)
 
-function SetGroupState(groupID, state)
-    if groupID == nil then return print("SetGroupState was sent an invalid groupID :"..groupID) end
-    if state == nil then return print("SetGroupState was sent an invalid state :"..state) end
-    GroupStates[groupID]["state"] = state
+function SetGroupData(groupID, key, data)
+    if groupID == nil then return print("SetGroupData was sent an invalid groupID :"..groupID) end
+    if key == nil then return print("SetGroupData was sent an invalid state :"..state) end
+    GroupStates[groupID][key] = data
 end
-exports("SetGroupState", SetGroupState)
+exports("SetGroupData", SetGroupData)
 
-function GetGroupState(groupID, state)
-    if groupID == nil then return print("GetGroupState was sent an invalid groupID :"..groupID) end
-    if state == nil then return print("GetGroupState was sent an invalid state :"..state) end
-    if GroupStates[groupID]["state"] ~= nil then
-        return GroupStates[groupID]["state"]
+function GetGroupData(groupID, key)
+    if groupID == nil then return print("GetGroupData was sent an invalid groupID :"..groupID) end
+    if key == nil then return print("GetGroupData was sent an invalid key :"..state) end
+    if GroupStates[groupID][key] ~= nil then
+        return GroupStates[groupID][key]
     else
         return false
     end
     
 end
-exports("GetGroupState", GetGroupState)
+exports("GetGroupData", GetGroupData)
 
-function DestroyGroupState(groupID, state)
-    if groupID == nil then return print("DestroyGroupState was sent an invalid groupID :"..groupID) end
-    if state == nil then return print("DestroyGroupState was sent an invalid state :"..state) end
-    GroupStates[groupID]["state"] = nil
+function DestroyGroupData(groupID, key)
+    if groupID == nil then return print("DestroyGroupData was sent an invalid groupID :"..groupID) end
+    if state == nil then return print("DestroyGroupData was sent an invalid key :"..state) end
+    GroupStates[groupID][key] = nil
 end
-exports("DestroyGroupState", DestroyGroupState)
+exports("DestroyGroupData", DestroyGroupData)
