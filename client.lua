@@ -57,6 +57,7 @@ RegisterNetEvent("groups:createBlip", function(name, data)
 
     if data.route then 
         SetBlipRoute(blip, true)
+        if not data.routeColor then data.routeColor = data.color end
         SetBlipRouteColour(blip, data.routeColor)
     end
     GroupBlips[#GroupBlips+1] = {name = name, blip = blip}
