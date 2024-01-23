@@ -258,7 +258,6 @@ function FindGroupByMember(src)
                         return group
                     end
                 end
-                return 0
             end
         end
     else
