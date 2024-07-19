@@ -221,7 +221,7 @@ RegisterNUICallback('group-leave', function(data)
     end
 end)
 
-RegisterNUICallback('group-destroy', function()
+RegisterNUICallback('group-cleanup', function()
     TriggerServerEvent("groups:destroyGroup")
 end)
 

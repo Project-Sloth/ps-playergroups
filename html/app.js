@@ -126,6 +126,7 @@ const groups = {
                 $.post(`https://${GetParentResourceName()}/update-status`, JSON.stringify({status : this.CurrentStage }));
             } else if (type === "groupDestroy") {
                 this.HideMenus()
+                this.mainMenuShow = true
                 this.isInGroup = false
                 this.isGroupLeader = false 
                 this.GroupCleanup()
