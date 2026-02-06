@@ -1,3 +1,9 @@
+# Archiving Older Repos (Focus on ps-mdt v3)
+
+To help streamline things a bit around here (for the little work we actually do 😅), I’m going to be archiving the repos listed below. This doesn’t mean they’re broken or unusable, it just means we won’t be pushing any further updates to them for now.
+
+Our main focus moving forward will be ps-mdt v3 and its dependencies.
+
 # THIS IS NOT A DRAG AND DROP SCRIPT
 This script is used as a tool to create and get data for player groups.
 There are no jobs or anything included with these files.
